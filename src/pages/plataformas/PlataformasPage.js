@@ -8,11 +8,13 @@ import HeaderComponent from '../../components/HeaderComponent';
 
 const url = process.env.REACT_APP_BACK_URL;
 
-function PlatformPage() {
+function PlataformasPage() {
     const [datosCargados, setDatosCargados] = useState(false);
     const [plataformas, setplataformas] = useState([]);
+    const [borrado, setBorrado] = useState(false);
+    const [mensaje, setMensaje] = useState("");
 
-    const cargarDatos = () => {
+    const cargarDatos = async () => {
         axios
             .get(`${url}/plataformas`)
             .then((response) => {
@@ -27,12 +29,26 @@ function PlatformPage() {
         cargarDatos();
     }, []);
 
+    const borrarPlataforma = async (id) => {
+        try {
+            const response = await axios.delete(`${url}/plataformas/${id}`);
+            setBorrado(true);
+            setMensaje(response.data.mensaje);
+            cargarDatos();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     if (!datosCargados) {
         return <div>Cargando..</div>;
     } else {
         return (
-
-        <><HeaderComponent /><NavBarComponent /><div className="table-responsive">
+            <>
+            <NavBarComponent />
+            <HeaderComponent />
+            {borrado && <div className="alert alert-success">{mensaje}</div>}
+            <div className="table-responsive m-3">
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -45,16 +61,16 @@ function PlatformPage() {
                             <tr key={plataforma.id}>
                                 <td>{plataforma.id}</td>
                                 <td>{plataforma.nombre}</td>
-                                <td>
+                                <td className="text-end">
                                     <div className="btn-group" role="group" aria-label="">
-                                        <Link to={`/editarPlataforma/${plataforma.id}`}>
+                                        <Link to={`/plataformas/editar/${plataforma.id}`}>
                                             <button type="button" className="btn btn-warning">
                                                 editar
                                             </button>
                                         </Link>
-                                        <Link to={`/borrar/${plataforma.id}`}>
-                                            <button type="button" className="btn btn-danger">
-                                                borrar
+                                        <Link to={`/plataformas`}>
+                                            <button type="button" className="btn btn-danger" onClick={() => borrarPlataforma(plataforma.id)}>
+                                                eliminar
                                             </button>
                                         </Link>
                                     </div>
@@ -64,14 +80,14 @@ function PlatformPage() {
                     </tbody>
                 </table>
 
-                <Link to="/agregar" className="btn btn-secondary">
+                <Link to="/plataformas/agregar" className="btn btn-secondary">
                     Agregar plataforma
                 </Link>
             </div>
-            <FooterComponent />
+                <FooterComponent />
             </>
         );
     }
 }
 
-export default PlatformPage;
+export default PlataformasPage;

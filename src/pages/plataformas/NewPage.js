@@ -6,17 +6,17 @@ import HeaderComponent from '../../components/HeaderComponent';
 
 const url = process.env.REACT_APP_BACK_URL;
 
-function NewGenero() {
+function NewPlataforma() {
     const [nom, setName] = useState("");
     const [error, setError] = useState("");
     const [exito, setExito] = useState("");
 
-    const agregarGenero = async () => {
+    const agregarPlataforma = async () => {
         try {
-            const respuesta = await axios.post(`${url}/generos`, { nombre: nom });
+            const respuesta = await axios.post(`${url}/plataformas`, { nombre: nom });
             setExito(respuesta.data.mensaje);
         } catch (error) {
-            console.error("Error al agregar el genero:", error); //como manejar el error
+            console.error("Error al agregar la plataforma:", error); //como manejar el error
         }
     };
 
@@ -27,7 +27,7 @@ function NewGenero() {
             setError("El nombre no puede estar vacio");
             return;
         }
-        agregarGenero();
+        agregarPlataforma();
     };
 
 
@@ -44,7 +44,7 @@ function NewGenero() {
             <form onSubmit={handleSubmit}>
                 <div className="mb-3 my-3">
                     <label htmlFor="nameInput" className="form-label">
-                        Nombre genero:
+                        Nombre plataforma:
                     </label>
                     <input type="text" className="form-control form-control-lg" id="nameInput" value={nom} onChange={handleChange}/>
                 </div>
@@ -56,4 +56,4 @@ function NewGenero() {
     );
 }
 
-export default NewGenero;
+export default NewPlataforma;

@@ -5,12 +5,14 @@ import { BrowserRouter, Route, Routes} from "react-router-dom";
 
 /*page component*/
 import DashboardPage from "./pages/dashboard/DashboardPage";
-import GenderPage from "./pages/generos/GenderPage";
-import EditPage from "./pages/generos/EditPage";
-import PlatformPage from "./pages/plataformas/PlataformasPage";
+import GenderPage from "./pages/generos/GenerosPage";
+import EditGenero from "./pages/generos/EditPage";
+import NewGenero from "./pages/generos/NewPage";
+import PlataformasPage from "./pages/plataformas/PlataformasPage";
+import EditPlataforma from "./pages/plataformas/EditPage";
+import NewPlataforma from "./pages/plataformas/NewPage";
 
 import "./assets/styles/index.css"
-
 
 function App() {
   return (
@@ -19,8 +21,11 @@ function App() {
         <Routes>
           <Route path={"/"} element={<DashboardPage />} />
           <Route path={"/generos"} element={<GenderPage />} />
-          <Route path={"/editar/:id"} element={<EditPage />} />
-          <Route path={"/plataformas"} element={<PlatformPage />} />
+          <Route path={"/generos/editar/:id"} element={<EditGenero />} />
+          <Route path={"/generos/agregar"} element={<NewGenero />} />
+          <Route path={"/plataformas"} element={<PlataformasPage />} />
+          <Route path={"/plataformas/agregar"} element={<NewPlataforma />} />
+          <Route path={"/plataformas/editar/:id"} element={<EditPlataforma />} />
         </Routes>
       </BrowserRouter></>
   );

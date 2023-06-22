@@ -10,6 +10,9 @@ const url = process.env.REACT_APP_BACK_URL;
 function GenderPage() {
   const [datosCargados, setDatosCargados] = useState(false);
   const [generos, setGeneros] = useState([]);
+  const [borrado, setBorrado] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+
 
   const cargarDatos = () => {
     axios
@@ -22,17 +25,36 @@ function GenderPage() {
       .catch(console.log);
   };
 
-  useEffect(() => {
+  //codigo que se ejecuta luego del primer render del componente, es un hook que permite definir efectos, se ejecuta 
+  //cada vez que se renderice el componente.
+  //primer parametro, funcion codigo a ejecutar
+  //segundo parametro, lista de dependencias, opcional, es un array [], si no se pone se ejecuta siempre, si le pongo el [] es solo una vez
+  //se ejecuta como minimo una vez, q es cuando se carga el componente
+  useEffect(() => { 
     cargarDatos();
-  }, []);
+  }, []); 
+
+
+  const borrarGenero = async (id) => {
+    try {
+      const response = await axios.delete(`${url}/generos/${id}`);
+      setBorrado(true);
+      setMensaje(response.data.mensaje);
+      cargarDatos();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   if (!datosCargados) {
     return <div>Cargando..</div>;
   } else {
     return (
       <div>
+      <NavBarComponent />
         <HeaderComponent />
-        <NavBarComponent />
+        {borrado && <div className="alert alert-success">{mensaje}</div>}
         <div className="table-responsive m-3">
           <table className="table table-hover">
             <thead>
@@ -48,14 +70,14 @@ function GenderPage() {
                   <td>{genero.nombre}</td>
                   <td className="text-end">
                     <div className="btn-group" role="group" aria-label="">
-                      <Link to={`/editar/${genero.id}`}>
+                      <Link to={`/generos/editar/${genero.id}`}>
                         <button type="button" className="btn btn-warning">
                           editar
                         </button>
                       </Link>
-                      <Link to={`/borrar/${genero.id}`}>
-                        <button type="button" className="btn btn-danger">
-                          borrar
+                      <Link to={`/generos`}>
+                        <button type="button" className="btn btn-danger" onClick={() => borrarGenero(genero.id)}>
+                        eliminar
                         </button>
                       </Link>
                     </div>
@@ -65,8 +87,8 @@ function GenderPage() {
             </tbody>
           </table>
 
-          <Link to="/agregar" className="btn btn-secondary">
-            Agregar Genero
+          <Link to="/generos/agregar" className="btn btn-secondary">
+            Agregar genero
           </Link>
         </div>
 
