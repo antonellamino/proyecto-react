@@ -36,7 +36,7 @@ function PlataformasPage() {
             setMensaje(response.data.mensaje);
             cargarDatos();
         } catch (error) {
-            console.error(error);
+            console.error(error);//que hacer con los errores
         }
     };
 
@@ -80,7 +80,7 @@ function PlataformasPage() {
                     </tbody>
                 </table>
 
-                <Link to="/plataformas/agregar" className="btn btn-secondary">
+                <Link to="/plataformas/agregar" className="btn btn-primary btn-cambio">
                     Agregar plataforma
                 </Link>
             </div>

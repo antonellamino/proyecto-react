@@ -42,7 +42,7 @@ function GenderPage() {
       setMensaje(response.data.mensaje);
       cargarDatos();
     } catch (error) {
-      console.error(error);
+      console.error(error); //que hacer con el error
     }
   };
 
@@ -87,7 +87,7 @@ function GenderPage() {
             </tbody>
           </table>
 
-          <Link to="/generos/agregar" className="btn btn-secondary">
+          <Link to="/generos/agregar" className="btn btn-primary btn-cambio">
             Agregar genero
           </Link>
         </div>

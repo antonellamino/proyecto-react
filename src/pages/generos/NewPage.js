@@ -15,6 +15,7 @@ function NewGenero() {
         try {
             const respuesta = await axios.post(`${url}/generos`, { nombre: nom });
             setExito(respuesta.data.mensaje);
+            setName("");
         } catch (error) {
             console.error("Error al agregar el genero:", error); //como manejar el error
         }
@@ -50,7 +51,7 @@ function NewGenero() {
                 </div>
                 {error && <h6 className="text-danger">{error}</h6>}
                 {exito && <h6 className="text-success">{exito}</h6>}
-                <button type="submit" className="btn btn-primary px-5 my-3">Enviar</button>
+                <button type="submit" className="btn btn-primary btn-cambio">Enviar</button>
 
             </form><FooterComponent /></>
     );

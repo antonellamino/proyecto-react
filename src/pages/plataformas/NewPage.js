@@ -15,6 +15,7 @@ function NewPlataforma() {
         try {
             const respuesta = await axios.post(`${url}/plataformas`, { nombre: nom });
             setExito(respuesta.data.mensaje);
+            setName("");
         } catch (error) {
             console.error("Error al agregar la plataforma:", error); //como manejar el error
         }

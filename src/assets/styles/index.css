@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Signika&display=swap');
 
 *{
     margin: 0;
@@ -6,19 +7,29 @@
     box-sizing: border-box;
 }
 
-img{
-    height: 250px;
+body{
+    font-family: 'Signika', sans-serif;
+    font-size: larger;
+} 
 
+img{
+    height: 300px;
 }
 
+.me-3{
+    height: 250px;
+    margin: 25px;
+}
 h1{
     font-size: 80px;
     font-family: 'Press Start 2P', cursive;
 }
 
+
 form{
     height: 100%;
     width: 100%;
+    font-size: 20px;
 }
 
 h2{
@@ -33,3 +44,33 @@ h2{
     border-width: 3px;
 }
 
+.form-control{
+    width: 80%;
+    font-size: 17px;
+}
+
+.form-select{
+    width: 80%;
+    font-size: 17px;
+}
+
+.btn-primary{
+    width: 30%;
+    font-size: 20px;
+}
+
+.bg-dark{
+    margin-bottom: 20px;
+}
+
+.btn-warning, .btn-danger{
+    margin: 5px;
+    height: 40px;
+    width: 100px;
+}
+
+.btn-cambio{
+    height: 40px;
+    width: 200px;
+    font-size: 17px;
+}

@@ -14,50 +14,47 @@ function DashboardPage() {
     const [plataformas, setPlataformas] = useState([]);
     const [generos, setGeneros] = useState([]);
 
-    const cargarDatos = () => {
-        axios
-            .get(`${url}/juegos`)
-            .then((respuesta) => {
-                setDatosCargados(true);
-                setJuegos(respuesta.data.juegos);
-            })
-            .catch("error");
+    //traigo todos los datos desde su correspondiente api y los guardo
+    const cargarDatos = async () => {
+        try {
+            const juegosRespuesta = await axios.get(`${url}/juegos`);
+            setDatosCargados(true);
+            setJuegos(juegosRespuesta.data.juegos);
 
-        axios
-            .get(`${url}/plataformas`)
-            .then((respuesta) => {
-                setPlataformas(respuesta.data.plataformas);
-            })
-            .catch("error");
+            const plataformasRespuesta = await axios.get(`${url}/plataformas`);
+            setPlataformas(plataformasRespuesta.data.plataformas);
 
-        axios
-            .get(`${url}/generos`)
-            .then((respuesta) => {
-                setGeneros(respuesta.data.generos);
-            })
-            .catch("error");
+            const generosRespuesta = await axios.get(`${url}/generos`);
+            setGeneros(generosRespuesta.data.generos);
+        } catch (error) {
+            console.error("Error al cargar los datos:", error); //como manejar este error?
+        }
     };
 
+
+    //codigo que se va a ejecutar al renderizar(efecto)
     useEffect(() => {
         cargarDatos();
     }, []);
 
 
+    //decodificacion de la imagen en base 64 y retorno del texto //VER
     const decodificarImagen = (imgApi, tipo) => {
         const imagen = new Image();
         imagen.src = `data:image/${tipo};base64, ${imgApi}`;
         return imagen.src;
     }
 
+    //armado de los parametros para la consulta sql a traves de los value de los inputs y solicitud a la api de juegos, seteo de los juegos despues del filtrado
     const filtrar = (e) => {
         e.preventDefault();
         const nombreInput = e.target.nombre.value;
         const plataforma = e.target.id_plataforma.value;
         const genero = e.target.id_genero.value;
         const orden = e.target.orden.value;
-        // Creo un objeto para almacenar los parámetros de la solicitud
+        // creo un objeto para almacenar los parámetros de la solicitud
         const parametros = {};
-        // Agrego los valores al objeto de parámetros solo si están presentes
+        // agrego los valores al objeto de parámetros solo si están presentes
         if (nombreInput) {
             parametros.nombre = nombreInput;
         }
@@ -71,18 +68,17 @@ function DashboardPage() {
             parametros.orden = orden;
         }
 
-        // Construir la URL con los parámetros de la solicitud
+        // construccion de la URL con los parametros de la solicitud
         const consulta = new URLSearchParams(parametros).toString();
         const urlApi = `${url}/juegos?${consulta}`;
 
-        // Realizo la solicitud a la API
-        axios
-            .get(urlApi)
+        // realizo la solicitud a la api con la url armada con los parametros
+        axios.get(urlApi)
             .then((respuesta) => {
                 setJuegos(respuesta.data.juegos);
             })
             .catch((error) => {
-                console.error(error);
+                console.error(error); //ver manejo de error
             });
     };
 

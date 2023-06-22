@@ -10,55 +10,65 @@ const url = process.env.REACT_APP_BACK_URL;
 
 function EditPlataforma() {
     const { id } = useParams();
-    const [name, setName] = useState("");
+    const [nom, setNom] = useState("");
+    const [mjeExito, setMjeExito] = useState("");
+    const [mjeError, setMjeError] = useState("");
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${url}/generos/`);
-                const fetchedName = response.data.nombre;
-                setName(fetchedName);
-            } catch (error) {
-                console.error("Error al obtener el nombre:", error);
-            }
-        };
 
-        fetchData();
-    }, [id]);
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const getDatos = async () => {
         try {
-            // Aquí realizas la solicitud a la API para enviar el nombre
-            const response = await axios.put(`${url}/generos/${id}`, {
-                nombre: name
-            });
-            
-            console.log("Respuesta de la API:", response.data);
-            
-            // Puedes realizar alguna acción adicional después de enviar el nombre
-            // ...
-        console.log("Nombre ingresado:", name);
+            const respuesta = await axios.get(`${url}/plataformas`);
+            const jsonId = respuesta.data.plataformas.filter((plataforma) => plataforma.id === parseInt(id)); //usodoble o triple? si no tengo q parsear a int, lo castee a int, salia en consola
+            const nombreId = jsonId[0].nombre;
+            if (jsonId) {
+                setNom(nombreId);
+            }
         } catch (error) {
-            console.error("Error al enviar el nombre:", error);
+            console.error(error); //ver manejo de error
         }
     };
 
-    const handleChange = (event) => {
-        setName(event.target.value);
+
+    useEffect(() => {
+        getDatos();
+    }, [id]);
+
+
+    const eventoSubmit = async (e) => {
+        e.preventDefault();
+        if (nom === "") {
+            setMjeError("El nombre no puede estar vacio");
+        } else {
+            try {
+                const respuesta = await axios.put(`${url}/plataformas/${id}`, { nombre: nom });//agregar la respuesta para q se muestre un mje
+                setMjeExito(respuesta.data.mensaje); //guardo el mje que responde la api para mostrar
+                setNom(""); //limpio el input
+            } catch (error) {
+                console.error(error);
+            }
+        }
     };
-    console.log(name);
+
+    const eventoInput = (e) => {
+        setNom(e.target.value);
+    };
 
     return (
         <><NavBarComponent />
             <HeaderComponent />
-            <form onSubmit={handleSubmit}>
+            {mjeExito && (<div className="alert alert-success" role="alert">
+                {mjeExito}
+            </div>)}
+            {mjeError && (<div className="alert alert-danger" role="alert">
+                {mjeError}
+            </div>)}
+            <form onSubmit={eventoSubmit}>
                 <div className="mb-3 my-3">
                     <label htmlFor="nameInput" className="form-label">
                         Nombre:
                     </label>
-                    <input type="text" className="form-control form-control-lg" id="nameInput" value={name} 
-                    onChange={handleChange}
+                    <input type="text" className="form-control form-control-lg" id="nameInput" value={nom}
+                        onChange={eventoInput}
                     />
                 </div>
                 <button type="submit" className="btn btn-primary px-5 my-3">Enviar</button>
