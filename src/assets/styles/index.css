@@ -74,3 +74,12 @@ h2{
     width: 200px;
     font-size: 17px;
 }
+
+.mb-3{
+    height: 50%;
+    margin: 10px;
+}
+
+.form-agregar{
+    margin: 20px;
+}

@@ -42,7 +42,7 @@ function NewPlataforma() {
     return (
         <><NavBarComponent />
             <HeaderComponent />
-            <form onSubmit={handleSubmit}>
+            <form className="form-agregar" onSubmit={handleSubmit}>
                 <div className="mb-3 my-3">
                     <label htmlFor="nameInput" className="form-label">
                         Nombre plataforma:
@@ -51,7 +51,7 @@ function NewPlataforma() {
                 </div>
                 {error && <h6 className="text-danger">{error}</h6>}
                 {exito && <h6 className="text-success">{exito}</h6>}
-                <button type="submit" className="btn btn-primary px-5 my-3">Enviar</button>
+                <button type="submit" className="btn btn-primary btn-cambio">Enviar</button>
 
             </form><FooterComponent /></>
     );

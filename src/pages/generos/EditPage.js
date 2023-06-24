@@ -71,9 +71,9 @@ function EditGenero() {
                     <label htmlFor="nameInput" className="form-label">
                         Nombre:
                     </label>
-                    <input type="text" className="form-control form-control-lg" id="nameInput" value={nom} onChange={eventoInput} />
+                    <input type="text" className="form-control" id="nameInput" value={nom} onChange={eventoInput} />
                 </div>
-                <button type="submit" className="btn btn-primary px-5 my-3">Enviar</button>
+                <button type="submit" className="btn btn-primary">Enviar</button>
 
             </form><FooterComponent /></>
     );

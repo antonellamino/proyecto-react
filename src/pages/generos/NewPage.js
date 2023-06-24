@@ -42,7 +42,7 @@ function NewGenero() {
     return (
         <><NavBarComponent />
             <HeaderComponent />
-            <form onSubmit={handleSubmit}>
+            <form className="form-agregar" onSubmit={handleSubmit}>
                 <div className="mb-3 my-3">
                     <label htmlFor="nameInput" className="form-label">
                         Nombre genero:
