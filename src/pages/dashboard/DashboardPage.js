@@ -51,7 +51,7 @@ function DashboardPage() {
         const nombreInput = e.target.nombre.value;
         const plataforma = e.target.id_plataforma.value;
         const genero = e.target.id_genero.value;
-        const orden = e.target.orden.value;
+        const ordenar = e.target.ordenar.value;
         // creo un objeto para almacenar los parámetros de la solicitud
         const parametros = {};
         // agrego los valores al objeto de parámetros solo si están presentes
@@ -64,8 +64,8 @@ function DashboardPage() {
         if (genero) {
             parametros.id_genero = genero;
         }
-        if (orden) {
-            parametros.orden = orden;
+        if (ordenar) {
+            parametros.ordenar = ordenar;
         }
 
         // construccion de la URL con los parametros de la solicitud
@@ -127,9 +127,9 @@ function DashboardPage() {
                             </div>
                         </div>
                         <div className="mb-3 row">
-                            <label htmlFor="orden" className="col-sm-3 col-form-label text-light">Orden:</label>
+                            <label htmlFor="ordenar" className="col-sm-3 col-form-label text-light">ordenar:</label>
                             <div className="col-sm-9">
-                                <select id="orden" name="orden" className="form-select">
+                                <select id="ordenar" name="ordenar" className="form-select">
                                     <option selected value="">Seleccionar</option>
                                     <option value="asc">Ascendente</option>
                                     <option value="desc">Descendente</option>

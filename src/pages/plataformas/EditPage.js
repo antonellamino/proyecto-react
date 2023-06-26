@@ -18,9 +18,10 @@ function EditPlataforma() {
     const getDatos = async () => {
         try {
             const respuesta = await axios.get(`${url}/plataformas`);
-            const jsonId = respuesta.data.plataformas.filter((plataforma) => plataforma.id === parseInt(id)); //usodoble o triple? si no tengo q parsear a int, lo castee a int, salia en consola
-            const nombreId = jsonId[0].nombre;
-            if (jsonId) {
+            const existe = respuesta.data.plataformas.filter((plataforma) => plataforma.id === parseInt(id)); //usodoble o triple? si no tengo q parsear a int, lo castee a int, salia en consola
+            
+            if (existe) {
+                const nombreId = existe[0].nombre;
                 setNom(nombreId);
             }
         } catch (error) {
@@ -62,7 +63,7 @@ function EditPlataforma() {
             {mjeError && (<div className="alert alert-danger" role="alert">
                 {mjeError}
             </div>)}
-            <form onSubmit={eventoSubmit}>
+            <form className="form-edit" onSubmit={eventoSubmit}>
                 <div className="mb-3 my-3">
                     <label htmlFor="nameInput" className="form-label">
                         Nombre:
@@ -71,7 +72,7 @@ function EditPlataforma() {
                         onChange={eventoInput}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary px-5 my-3">Enviar</button>
+                <button type="submit" className="btn btn-primary px-5 my-3 btn-cambio">Enviar</button>
 
             </form><FooterComponent /></>
     );

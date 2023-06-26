@@ -66,14 +66,14 @@ function EditGenero() {
             {mjeError && (<div className="alert alert-danger" role="alert">
                 {mjeError}
             </div>)}
-            <form onSubmit={eventoSubmit}>
+            <form className="form-edit" onSubmit={eventoSubmit}>
                 <div className="mb-3 my-3">
                     <label htmlFor="nameInput" className="form-label">
                         Nombre:
                     </label>
                     <input type="text" className="form-control" id="nameInput" value={nom} onChange={eventoInput} />
                 </div>
-                <button type="submit" className="btn btn-primary">Enviar</button>
+                <button type="submit" className="btn btn-primary btn-cambio">Enviar</button>
 
             </form><FooterComponent /></>
     );

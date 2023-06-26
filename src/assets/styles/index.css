@@ -20,6 +20,7 @@ img{
     height: 250px;
     margin: 25px;
 }
+
 h1{
     font-size: 80px;
     font-family: 'Press Start 2P', cursive;
@@ -30,6 +31,10 @@ form{
     height: 100%;
     width: 100%;
     font-size: 20px;
+}
+
+.form-edit{
+    margin: 10px;
 }
 
 h2{
@@ -43,6 +48,12 @@ h2{
     padding: 10px;
     border-width: 3px;
 }
+
+
+.card-img-top{
+    width: 80%;
+}
+
 
 .form-control{
     width: 80%;
@@ -82,4 +93,11 @@ h2{
 
 .form-agregar{
     margin: 20px;
+}
+
+
+.btn-new{
+    height: 40px;
+    width: 200px;
+    font-size: 17px;
 }
