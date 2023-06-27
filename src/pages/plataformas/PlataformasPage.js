@@ -13,6 +13,7 @@ function PlataformasPage() {
     const [plataformas, setplataformas] = useState([]);
     const [borrado, setBorrado] = useState(false);
     const [mensaje, setMensaje] = useState("");
+    const [mensajeError, setMensajeError] = useState("");
 
     const cargarDatos = async () => {
         axios
@@ -36,7 +37,7 @@ function PlataformasPage() {
             setMensaje(response.data.mensaje);
             cargarDatos();
         } catch (error) {
-            console.error(error);//que hacer con los errores
+            setMensajeError(error.response.data.mensaje);
         }
     };
 
@@ -47,6 +48,7 @@ function PlataformasPage() {
             <>
             <NavBarComponent />
             <HeaderComponent />
+            {mensajeError && <h6 className="text-danger">{mensajeError}</h6>}
             {borrado && <div className="alert alert-success">{mensaje}</div>}
             <div className="table-responsive m-3">
                 <table className="table table-hover">

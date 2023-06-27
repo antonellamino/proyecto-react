@@ -17,7 +17,7 @@ function NewGenero() {
             setExito(respuesta.data.mensaje);
             setName("");
         } catch (error) {
-            console.error("Error al agregar el genero:", error); //como manejar el error
+            console.error(error); //como manejar el error?
         }
     };
 

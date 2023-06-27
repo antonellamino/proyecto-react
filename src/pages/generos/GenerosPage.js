@@ -12,13 +12,14 @@ function GenderPage() {
   const [generos, setGeneros] = useState([]);
   const [borrado, setBorrado] = useState(false);
   const [mensaje, setMensaje] = useState("");
+  const[mensajeError, setMensajeError] = useState("");
 
 
   const cargarDatos = () => {
     axios
       .get(`${url}/generos`)
       .then((response) => {
-        console.log(response.data);
+        console.log(response.data); //borrarlo para entrega - hacer la funcion asincronica
         setDatosCargados(true);
         setGeneros(response.data.generos);
       })
@@ -42,7 +43,7 @@ function GenderPage() {
       setMensaje(response.data.mensaje);
       cargarDatos();
     } catch (error) {
-      console.error(error); //que hacer con el error
+      setMensajeError(error.response.data.mensaje);
     }
   };
 
@@ -54,6 +55,7 @@ function GenderPage() {
       <div>
       <NavBarComponent />
         <HeaderComponent />
+        {mensajeError && <h6 className="text-danger">{mensajeError}</h6>}
         {borrado && <div className="alert alert-success">{mensaje}</div>}
         <div className="table-responsive m-3">
           <table className="table table-hover">

@@ -27,7 +27,7 @@ function DashboardPage() {
             const generosRespuesta = await axios.get(`${url}/generos`);
             setGeneros(generosRespuesta.data.generos);
         } catch (error) {
-            console.error("Error al cargar los datos:", error); //como manejar este error?
+            console.error(error.response.data.mensaje); //como manejar este error? //probarlo
         }
     };
 
