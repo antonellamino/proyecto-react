@@ -17,11 +17,10 @@ function GenderPage() {
   const cargarDatos = async () => {
     try {
       const respuesta = await axios.get(`${url}/generos`);
-      console.log(respuesta.data); // borrar para entrega
       setDatosCargados(true);
       setGeneros(respuesta.data.generos);
     } catch (error) {
-      setError(true); // a chequear
+      console.alert("Ocurrio un error", error); // a chequear
     }
   };
 
@@ -42,7 +41,7 @@ function GenderPage() {
       setError(false);
       cargarDatos();
     } catch (error) {
-      setError("Hubo un error"); //ver esto
+      setError("Genero en uso, no se puede eliminar"); //ver esto
       setExito(false);
     }
   };
@@ -51,14 +50,14 @@ function GenderPage() {
   if (!datosCargados) { //chequeo de spinner
     return <div className="text-center mt-5">
       <div className="spinner-border" role="status"></div>
-      <h2>cargando juegos...</h2>
+      <h2>cargando generos...</h2>
     </div>;
   } else {
     return (
       <div>
         <NavBarComponent />
         <HeaderComponent />
-        {error && <h6 className="text-danger bg-dark">{error}</h6>}
+        {error && <div className="alert alert-danger" role="alert">{error}</div>}
         {exito && <div className="alert alert-success">{exito}</div>}
         <div className="table-responsive m-3">
           <table className="table table-hover">

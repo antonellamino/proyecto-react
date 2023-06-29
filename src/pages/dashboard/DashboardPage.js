@@ -29,7 +29,7 @@ function DashboardPage() {
             const generosRespuesta = await axios.get(`${url}/generos`);
             setGeneros(generosRespuesta.data.generos);
         } catch (error) {
-            console.log(error); //como manejar este error? // y probarlo
+            setError("Ocurrió un error");
         }
     };
 
@@ -80,17 +80,24 @@ function DashboardPage() {
                 setJuegos(respuesta.data.juegos);
             })
             .catch((error) => {
-                setError(error); //ver,creo que no es asi
+                setError("Ocurrió un error");
+                console.log(error);
             });
     };
 
 
 
-    if (!datosCargados) {
-        return <div class="text-center mt-5">
-            <div class="spinner-border" role="status"></div>
+    if (!datosCargados && !error    ) {
+        return <div className="text-center mt-5">
+            <div className="spinner-border" role="status"></div>
             <h2>cargando juegos...</h2>
             </div>
+    } else if (error) {
+        return (
+            <div className="alert alert-danger text-center">
+                Ocurrió un error al cargar los datos
+            </div>
+        );
     } else {
         return (
             <div>
@@ -109,8 +116,8 @@ function DashboardPage() {
                         <div className="mb-3 row">
                             <label htmlFor="plataforma" className="col-sm-3 col-form-label text-light">Plataforma:</label>
                             <div className="col-sm-9">
-                                <select id="id_plataforma" name="id_plataforma" className="form-select">
-                                    <option selected value="">Seleccionar</option>
+                                <select defaultValue="" id="id_plataforma" name="id_plataforma" className="form-select">
+                                    <option value="">Seleccionar</option>
                                     {plataformas.map((plataforma) => (
                                         <option key={plataforma.id} value={plataforma.id}>
                                             {plataforma.nombre}
@@ -122,8 +129,8 @@ function DashboardPage() {
                         <div className="mb-3 row">
                             <label htmlFor="genero" className="col-sm-3 col-form-label text-light">Genero:</label>
                             <div className="col-sm-9">
-                                <select id="id_genero" name="id_genero" className="form-select">
-                                    <option selected value="">Seleccionar</option>
+                                <select defaultValue="" id="id_genero" name="id_genero" className="form-select">
+                                    <option value="">Seleccionar</option>
                                     {generos.map((genero) => (
                                         <option key={genero.id} value={genero.id}>
                                             {genero.nombre}
@@ -135,8 +142,8 @@ function DashboardPage() {
                         <div className="mb-3 row">
                             <label htmlFor="ordenar" className="col-sm-3 col-form-label text-light">ordenar:</label>
                             <div className="col-sm-9">
-                                <select id="ordenar" name="ordenar" className="form-select">
-                                    <option selected value="">Seleccionar</option>
+                                <select defaultValue="" id="ordenar" name="ordenar" className="form-select">
+                                    <option value="">Seleccionar</option>
                                     <option value="asc">Ascendente</option>
                                     <option value="desc">Descendente</option>
                                 </select>

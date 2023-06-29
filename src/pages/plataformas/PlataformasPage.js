@@ -5,7 +5,6 @@ import FooterComponent from "../../components/FooterComponent";
 import NavBarComponent from '../../components/NavBarComponent';
 import HeaderComponent from '../../components/HeaderComponent';
 
-
 const url = process.env.REACT_APP_BACK_URL;
 
 function PlataformasPage() {
@@ -22,7 +21,7 @@ function PlataformasPage() {
             setDatosCargados(true);
             setplataformas(respuesta.data.plataformas);
         } catch (error) {
-            setError(true); //chequear
+            console.alert("Ocurrio un error", error); //chequear
         }
     };
 
@@ -38,7 +37,7 @@ function PlataformasPage() {
             setError(false);
             cargarDatos();
         } catch (error) {
-            setError("Hubo un error");//ver esto
+            setError("Plataforma en uso, no se puede eliminar"); //ver esto
             setExito(false);
         }
     };
@@ -46,14 +45,14 @@ function PlataformasPage() {
     if (!datosCargados) { //chequeo de spinner
         return <div className="text-center mt-5">
             <div className="spinner-border" role="status"></div>
-            <h2>cargando juegos...</h2>
+            <h2>cargando plataformas...</h2>
         </div>
     } else {
         return (
-            <>
+            <div>
                 <NavBarComponent />
                 <HeaderComponent />
-                {error && <h6 className="text-danger bg-dark">{error}</h6>}
+                {error && <div className="alert alert-danger" role="alert">{error}</div>}
                 {exito && <div className="alert alert-success">{exito}</div>}
                 <div className="table-responsive m-3">
                     <table className="table table-hover">
@@ -92,7 +91,7 @@ function PlataformasPage() {
                     </Link>
                 </div>
                 <FooterComponent />
-            </>
+            </div>
         );
     }
 }

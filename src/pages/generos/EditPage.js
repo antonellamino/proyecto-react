@@ -11,20 +11,20 @@ const url = process.env.REACT_APP_BACK_URL;
 function EditGenero() {
     const { id } = useParams();
     const [nom, setNom] = useState("");
-    const [mjeExito, setMjeExito] = useState("");
-    const [mjeError, setMjeError] = useState("");
-
+    const [exito, setExito] = useState("");
+    const [error, setError] = useState("");
+    const [errorCatch, setErrorCatch] = useState(false);
 
     const getDatos = async () => {
         try {
             const respuesta = await axios.get(`${url}/generos`);
-            const jsonId = respuesta.data.generos.filter((genero) => genero.id === parseInt(id)); //usodoble o triple? si no tengo q parsear a int, lo castee a int, salia en consola
-            const nombreId = jsonId[0].nombre;
-            if (jsonId) {
+            const existe = respuesta.data.generos.filter((genero) => genero.id === parseInt(id)); 
+            const nombreId = existe[0].nombre;
+            if (existe) {
                 setNom(nombreId);
             }
         } catch (error) {
-            console.error(error); //ver manejo del error, que hacer?
+            setErrorCatch("El ID no existe");
         }
     };
 
@@ -38,42 +38,41 @@ function EditGenero() {
     const eventoSubmit = async (e) => {
         e.preventDefault();
         if(nom === ""){
-            setMjeError("El nombre no puede estar vacio");
+            setError("El nombre no puede estar vacio");
+            setExito(false);
         } else {
             try {
-                const respuesta = await axios.put(`${url}/generos/${id}`, { nombre: nom });//agregar la respuesta para q se muestre un mje
-                setMjeExito(respuesta.data.mensaje); //guardo el mje que responde la api para mostrar
-                setNom(""); //limpio el input
+                const respuesta = await axios.put(`${url}/generos/${id}`, { nombre : nom });//agregar la respuesta para q se muestre un mje
+                setExito(respuesta.data.mensaje); //guardo el mje que responde la api para mostrar
             } catch (error) {
-                console.error(error);
+                setErrorCatch("Ocurio un error");
             }
         }
     };
 
 
-    const eventoInput = (e) => {
+    const eventoOnChange = (e) => {
         setNom(e.target.value); //obtengo el valor del input
+        setError("");
+        setExito("");
     };
 
 
     return (
         <><NavBarComponent />
         <HeaderComponent />
-            {/* si mjeexito tiene un valor, lo que esta entre () se ejecuta y se renderiza el componente */}
-            {mjeExito && (<div className="alert alert-success" role="alert">
-                {mjeExito}
-            </div>)}
-            {mjeError && (<div className="alert alert-danger" role="alert">
-                {mjeError}
-            </div>)}
+            {/* si exito tiene un valor, lo que esta entre () se ejecuta y se renderiza el componente */}
+            {exito && <div className="alert alert-success" role="alert">{exito}</div>}
+            {error && <div className="alert alert-danger" role="alert">{error}</div>}
+            {errorCatch && <div className="alert alert-danger" role="alert">{errorCatch}</div>}
             <form className="form-edit" onSubmit={eventoSubmit}>
                 <div className="mb-3 my-3">
                     <label htmlFor="nameInput" className="form-label">
                         Nombre:
                     </label>
-                    <input type="text" className="form-control" id="nameInput" value={nom} onChange={eventoInput} />
+                    <input type="text" className="form-control" id="nameInput" value={nom} onChange={eventoOnChange} disabled={errorCatch}/>
                 </div>
-                <button type="submit" className="btn btn-primary btn-cambio">Enviar</button>
+                <button type="submit" className="btn btn-primary btn-cambio" disabled={errorCatch}>Enviar</button>
 
             </form><FooterComponent /></>
     );
