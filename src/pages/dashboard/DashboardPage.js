@@ -9,10 +9,12 @@ import HeaderComponent from '../../components/HeaderComponent';
 const url = process.env.REACT_APP_BACK_URL;
 
 function DashboardPage() {
+
     const [juegos, setJuegos] = useState([]);
     const [datosCargados, setDatosCargados] = useState(false);
     const [plataformas, setPlataformas] = useState([]);
     const [generos, setGeneros] = useState([]);
+    const [error, setError] = useState("");
 
     //traigo todos los datos desde su correspondiente api y los guardo
     const cargarDatos = async () => {
@@ -27,7 +29,7 @@ function DashboardPage() {
             const generosRespuesta = await axios.get(`${url}/generos`);
             setGeneros(generosRespuesta.data.generos);
         } catch (error) {
-            console.error(error.response.data.mensaje); //como manejar este error? //probarlo
+            console.log(error); //como manejar este error? // y probarlo
         }
     };
 
@@ -78,19 +80,23 @@ function DashboardPage() {
                 setJuegos(respuesta.data.juegos);
             })
             .catch((error) => {
-                console.error(error); //ver manejo de error
+                setError(error); //ver,creo que no es asi
             });
     };
 
 
 
     if (!datosCargados) {
-        return <div>Cargando juegos...</div>;
+        return <div class="text-center mt-5">
+            <div class="spinner-border" role="status"></div>
+            <h2>cargando juegos...</h2>
+            </div>
     } else {
         return (
             <div>
                 <NavBarComponent />
                 <HeaderComponent />
+                {error && <div className="alert alert-danger" role="alert">{error}</div>}
                 <h2>Filtrar juego:</h2>
                 <div className="d-flex justify-content-center">
                     <form onSubmit={filtrar} className="bg-dark p-4">

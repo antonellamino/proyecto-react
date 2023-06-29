@@ -7,6 +7,7 @@ import HeaderComponent from '../../components/HeaderComponent';
 const url = process.env.REACT_APP_BACK_URL;
 
 function NewGenero() {
+
     const [nom, setName] = useState("");
     const [error, setError] = useState("");
     const [exito, setExito] = useState("");
@@ -16,16 +17,18 @@ function NewGenero() {
             const respuesta = await axios.post(`${url}/generos`, { nombre: nom });
             setExito(respuesta.data.mensaje);
             setName("");
+            setError(false);
         } catch (error) {
-            console.error(error); //como manejar el error?
+            console.log(error); //ver
         }
     };
 
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if(nom === ""){
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (nom === "") {
             setError("El nombre no puede estar vacio");
+            setExito(false);
             return;
         }
         agregarGenero();
@@ -36,7 +39,7 @@ function NewGenero() {
     const handleChange = (e) => {
         setName(e.target.value); //valor del input que se setea al name
         setError("");
-        setExito(""); //limpia los mjes
+        setExito("");
     };
 
     return (
@@ -44,13 +47,14 @@ function NewGenero() {
             <HeaderComponent />
             <form className="form-agregar" onSubmit={handleSubmit}>
                 <div className="mb-3 my-3">
+                    {error && <h6 className="text-danger">{error}</h6>}
+                    {exito && <h6 className="text-success">{exito}</h6>}
                     <label htmlFor="nameInput" className="form-label">
                         Nombre genero:
                     </label>
-                    <input type="text" className="form-control form-control-lg" id="nameInput" value={nom} onChange={handleChange}/>
+                    <input type="text" className="form-control form-control-lg" id="nameInput" value={nom} onChange={handleChange} />
                 </div>
-                {error && <h6 className="text-danger">{error}</h6>}
-                {exito && <h6 className="text-success">{exito}</h6>}
+
                 <button type="submit" className="btn btn-primary btn-cambio">Enviar</button>
 
             </form><FooterComponent /></>

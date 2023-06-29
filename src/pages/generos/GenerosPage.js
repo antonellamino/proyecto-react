@@ -10,20 +10,19 @@ const url = process.env.REACT_APP_BACK_URL;
 function GenderPage() {
   const [datosCargados, setDatosCargados] = useState(false);
   const [generos, setGeneros] = useState([]);
-  const [borrado, setBorrado] = useState(false);
-  const [mensaje, setMensaje] = useState("");
-  const[mensajeError, setMensajeError] = useState("");
+  const [exito, setExito] = useState("");
+  const [error, setError] = useState("");
 
 
-  const cargarDatos = () => {
-    axios
-      .get(`${url}/generos`)
-      .then((response) => {
-        console.log(response.data); //borrarlo para entrega - hacer la funcion asincronica
-        setDatosCargados(true);
-        setGeneros(response.data.generos);
-      })
-      .catch(console.log);
+  const cargarDatos = async () => {
+    try {
+      const respuesta = await axios.get(`${url}/generos`);
+      console.log(respuesta.data); // borrar para entrega
+      setDatosCargados(true);
+      setGeneros(respuesta.data.generos);
+    } catch (error) {
+      setError(true); // a chequear
+    }
   };
 
   //codigo que se ejecuta luego del primer render del componente, es un hook que permite definir efectos, se ejecuta 
@@ -31,32 +30,36 @@ function GenderPage() {
   //primer parametro, funcion codigo a ejecutar
   //segundo parametro, lista de dependencias, opcional, es un array [], si no se pone se ejecuta siempre, si le pongo el [] es solo una vez
   //se ejecuta como minimo una vez, q es cuando se carga el componente
-  useEffect(() => { 
+  useEffect(() => {
     cargarDatos();
-  }, []); 
+  }, []);
 
 
   const borrarGenero = async (id) => {
     try {
-      const response = await axios.delete(`${url}/generos/${id}`);
-      setBorrado(true);
-      setMensaje(response.data.mensaje);
+      const respuesta = await axios.delete(`${url}/generos/${id}`);
+      setExito(respuesta.data.mensaje);
+      setError(false);
       cargarDatos();
     } catch (error) {
-      setMensajeError(error.response.data.mensaje);
+      setError("Hubo un error"); //ver esto
+      setExito(false);
     }
   };
 
 
-  if (!datosCargados) {
-    return <div>Cargando..</div>;
+  if (!datosCargados) { //chequeo de spinner
+    return <div className="text-center mt-5">
+      <div className="spinner-border" role="status"></div>
+      <h2>cargando juegos...</h2>
+    </div>;
   } else {
     return (
       <div>
-      <NavBarComponent />
+        <NavBarComponent />
         <HeaderComponent />
-        {mensajeError && <h6 className="text-danger">{mensajeError}</h6>}
-        {borrado && <div className="alert alert-success">{mensaje}</div>}
+        {error && <h6 className="text-danger bg-dark">{error}</h6>}
+        {exito && <div className="alert alert-success">{exito}</div>}
         <div className="table-responsive m-3">
           <table className="table table-hover">
             <thead>
@@ -79,7 +82,7 @@ function GenderPage() {
                       </Link>
                       <Link to={`/generos`}>
                         <button type="button" className="btn btn-danger" onClick={() => borrarGenero(genero.id)}>
-                        eliminar
+                          eliminar
                         </button>
                       </Link>
                     </div>
